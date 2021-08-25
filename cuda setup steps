@@ -1,0 +1,407 @@
+
+
+Required Software:
+
+*) Ubuntu 16.10
+
+*) Anaconda3-2019.07-Linux-x86_64.sh
+
+*) CUDA Driver and Toolkit
+
+*) CuDNN
+
+*) Tensorflow and Keras
+
+ 
+
+## Need to check
+
+## https://blog.deeppoint.ai/deployment-keras-model-into-tensorflow-serving-with-gpu-e3137b8c8bfb
+
+ 
+
+ 
+
+### Create Azure VM along with data disk
+
+## Setting up data disk based on steps given on: https://docs.microsoft.com/en-us/azure/virtual-machines/linux/attach-disk-portal
+
+# finding a disk
+
+$ dmesg | grep SCSI
+
+$ sudo fdisk /dev/sdc
+
+$ sudo mkfs -t ext4 /dev/sdc1
+
+$ sudo mkdir /datadrive
+
+$ sudo mount /dev/sdc1 /datadrive
+
+$ sudo -i blkid
+
+$ sudo nano /etc/fstab
+
+ 
+
+### Important:
+
+$ sudo chown -R $USER ~/datadrive
+
+ 
+
+### Freeing memory periodically to remove unused memory blocks
+
+In some cases, the discard option may have performance implications. Alternatively, you can run the fstrim command manually from the command line, or add it to your crontab to run regularly:
+
+$ sudo apt-get install util-linux
+
+$ sudo fstrim /datadrive
+
+ 
+
+########### Accessing ubuntu server using Remote Desktop connection ############
+
+### install xrdp and MateDesktop for GUI access to ubuntu ###
+
+sudo apt-get install xrdp
+
+sudo apt-get update
+
+sudo apt-get install mate-core mate-desktop-environment mate-notification-daemon
+
+sudo sed -i.bak '/fi/a #xrdp multiple users configuration \n mate-session \n' /etc/xrdp/startwm.sh
+
+ 
+
+ 
+
+############### Do not follow following steps if previous is followed. #####################
+
+### install xdrp and xfc4 for GUI access to ubuntu
+
+ 
+
+$ sudo apt-get update
+
+$ sudo apt-get install ubuntu-desktop
+
+$ sudo apt-get install xfce4
+
+$ sudo apt-get install xrdp
+
+$ sudo systemctl enable xrdp
+
+ 
+
+$ echo xfce4-session >~/.xsession
+
+$ sudo nano /etc/xrdp/startwm.sh  <attention to the last line, it should be exactly like belo>
+
+#!/bin/sh
+
+if [ -r /etc/default/locale ]; then
+
+. /etc/default/locale
+
+export LANG LANGUAGE
+
+fi
+
+startxfce4
+
+ 
+
+$ sudo service xrdp restart
+
+#####################################
+
+ 
+
+Then, I decided to exclude xrdp from automatically being updated.
+
+$ sudo apt-mark hold xrdp
+
+ 
+
+ 
+
+ 
+
+### Install Anaconda 3
+
+$ wget https://repo.continuum.io/archive/Anaconda3-5.1.0-Linux-x86_64.sh
+
+## Anaconda3-2019.07-Linux-x86_64.sh
+
+$ bash Anaconda3-5.1.0-Linux-x86_64.sh -b -p ~/anaconda
+
+$ echo export PATH=~/anaconda/bin:$PATH >> ~/.bashrc
+
+$ source ~/.bashrc
+
+$ conda update conda
+
+ 
+
+### If you want to Uninstall Anaconda in future:
+
+ 
+
+$ rm -rf ~/anaconda. 
+
+$ vi ~/.bashrc # remove the anaconda directory from your `PATH` env var
+
+ 
+
+ 
+
+## Installing CUDA, Toolkit, CuDNN and Tensorflow
+
+# Add NVIDIA package repositories
+
+# Add HTTPS support for apt-key
+
+sudo apt-get install gnupg-curl
+
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_10.0.130-1_amd64.deb
+
+sudo dpkg -i cuda-repo-ubuntu1604_10.0.130-1_amd64.deb
+
+sudo apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/7fa2af80.pub
+
+sudo apt-get update
+
+wget http://developer.download.nvidia.com/compute/machine-learning/repos/ubuntu1604/x86_64/nvidia-machine-learning-repo-ubuntu1604_1.0.0-1_amd64.deb
+
+sudo apt install ./nvidia-machine-learning-repo-ubuntu1604_1.0.0-1_amd64.deb
+
+sudo apt-get update
+
+ 
+
+# Install NVIDIA driver
+
+# Issue with driver install requires creating /usr/lib/nvidia
+
+sudo mkdir /usr/lib/nvidia
+
+sudo apt-get install --no-install-recommends nvidia-410
+
+# Reboot. Check that GPUs are visible using the command: nvidia-smi
+
+ 
+
+ 
+
+After installation is complete, add PATH variable by adding following line to the .bashrc by running
+
+nano ~/.bashrc
+
+## Add following lines in ~/.bashrc at the end of file.
+
+export PATH=/usr/local/cuda-10.0/bin${PATH:+:${PATH}}
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/extras/CUPTI/lib64
+
+export TF_CPP_MIN_LOG_LEVEL=2 ## To disable some warning for Tensorflow, which says to utilize EVX (i.e. specific components of CPU) for computation.
+
+export CUDA_VISIBLE_DEVICES=0 ## To make CUDA visible. This can be done in PYTHON CODE too. Hence, it can be skipped for now.
+
+ 
+
+## Save, exit and run following command
+
+source ~/.bashrc
+
+ 
+
+ 
+
+You might also want to build CUDA samples and run it. It will take a while. For that you need to jump to CUDA sample directory. For me it is /usr/local/cuda-10.0/samples and run
+
+$ sudo make
+
+After that go to built sources
+
+$ /usr/local/cuda-10.0/samples/bin/x86_64/linux/release
+
+and execute ./deviceQuery and ./bandwidthTest
+
+ 
+
+### Disable auto update, which will cause error.
+
+amd76x_edac #this might not be required for x86 32 bit users.
+
+blacklist vga16fb
+
+blacklist nouveau
+
+blacklist rivafb
+
+blacklist nvidiafb
+
+blacklist rivatv
+
+ 
+
+## Manually downloaded and install following three files:
+
+libcudnn7-dev_7.5.0.56-1+cuda10.0_amd64.deb
+
+libcudnn7_7.5.0.56-1+cuda10.0_amd64.deb
+
+libcudnn7-doc_7.5.0.56-1+cuda10.0_amd64.deb
+
+ 
+
+ 
+
+#########
+
+The installation is completed. Let’s verify it by following instructions or run:
+
+cp -r /usr/src/cudnn_samples_v7/ $HOME
+
+cd $HOME/cudnn_samples_v7/mnistCUDNN
+
+make clean && make
+
+./mnistCUDNN
+
+ 
+
+If cuDNN was installed properly you will see a message: Test passed
+
+ 
+
+ 
+
+####  Install NCCL 2.3.5
+
+CCL is used to handle calculations on multiple GPU simultaneously. If you will use a single GPU, you can skip this step. Otherwise download Network Installer and run
+
+sudo dpkg -i nccl-repo-<version>.deb
+
+sudo apt install libnccl2 libnccl-dev
+
+That is it.
+
+              
+
+ 
+
+##### Create Virtual Environment
+
+$ conda create -n v36 python=3.6 anaconda
+
+#Initiate current shell to use conda activate
+
+$ conda init bash
+
+# Close the shell and reopen it.
+
+ 
+
+### Old one =================
+
+To activate this environment, use:
+
+$ source activate v36
+
+To deactivate an active environment, use:
+
+$ source deactivate
+
+ 
+
+### Install required packages in current virtual environment like Tensorflow
+
+$ source activate v36
+
+$ pip install tensorflow-gpu==1.13.1
+
+### End old one =================
+
+ 
+
+### Test the following code whether TF is installed without any error or warning:
+
+              
+
+Ex1:
+
+from tensorflow.python.client import device_lib;print(device_lib.list_local_devices())
+
+              
+
+Ex2:
+
+import tensorflow as tf
+
+from tensorflow.contrib.memory_stats.python.ops.memory_stats_ops import BytesInUse, BytesLimit
+
+with tf.device('/device:GPU:0'):  # Replace with device you are interested in
+
+               bytes_in_use = BytesInUse()
+
+               bytes_limit = BytesLimit()
+
+with tf.Session() as sess:
+
+              print(sess.run(bytes_in_use))
+
+               print(sess.run(bytes_limit / 1000000))
+
+ 
+
+ 
+
+## Installing other required packages
+
+sudo apt-get install libffi-dev python-dev build-essential
+
+sudo apt-get install graphviz
+
+pip install pillow
+
+pip install opencv-python
+
+ 
+
+pip install pydot
+
+pip install pandas
+
+pip install dlib / pip install dlib --verbose /
+
+pip install Augmentor
+
+pip install matplotlib
+
+pip install tensorflow==1.13.1
+
+pip install keras
+
+pip install sklearn
+
+#conda install pytorch torchvision -c pytorch
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+### References:
+
+https://medium.com/@vitali.usau/install-cuda-10-0-cudnn-7-3-and-build-tensorflow-gpu-from-source-on-ubuntu-18-04-3daf720b83fe
+
+https://medium.com/@alvincjin/setup-deep-learning-env-with-anaconda-in-ubuntu-14-3a621bdee8ac
+
+https://www.tensorflow.org/install/gpu

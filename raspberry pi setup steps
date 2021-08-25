@@ -1,0 +1,313 @@
+##https://www.raspberrypi.org/documentation/linux/software/python.md
+
+## To install a package for python 3
+
+#sudo apt-get install python3-picamera
+
+## To install a package for python 2
+
+#sudo apt-get install python2-picamera
+
+#sudo apt-get uninstall python3-wrapt
+
+ 
+
+## Not able to install cv2/opencv
+
+ 
+
+ 
+
+## wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-armv7l.sh
+
+bash Miniconda3-latest-Linux-armv7l.sh
+
+source ~/.bashrc
+
+Installation location: /home/pi/Kumar/miniconda3
+
+ 
+
+conda config --add channels rpi
+
+conda install python=3.6
+
+#conda update conda
+
+conda create -n v36 python=3.6
+
+## Installing other required packages
+
+sudo apt-get install libffi-dev python-dev build-essential
+
+sudo apt-get install graphviz
+
+ 
+
+# pip install pillow : Method 1 ==>
+
+# source: https://www.techcoil.com/blog/how-to-setup-python-imaging-library-pillow-on-raspbian-stretch-lite-for-processing-images-on-your-raspberry-pi/
+
+ 
+
+sudo apt-get update
+
+sudo apt-get update
+
+sudo apt-get install libjpeg-dev -y
+
+sudo apt-get install zlib1g-dev -y
+
+sudo apt-get install libfreetype6-dev -y
+
+sudo apt-get install liblcms1-dev -y
+
+sudo apt-get install libopenjp2-7 -y
+
+sudo apt-get install libtiff5 -y
+
+pip install pillow
+
+ 
+
+# pip install pillow : Method 2 ==>
+
+sudo pip3 install pillow
+
+sudo pip3 install opencv-python
+
+ 
+
+## Test opencv using test.py given on ############
+
+## https://raspberrypi.stackexchange.com/questions/100253/how-can-i-install-opencv-on-raspberry-pi-4-raspbian-buster ##
+
+wget https://upload.wikimedia.org/wikipedia/en/7/7d/Lenna_%28test_image%29.png -O lenna.jpg
+
+python3 test.py lenna.jpg
+
+ 
+
+## https://www.raspberrypi.org/blog/piwheels/
+
+sudo pip3 install pydot
+
+sudo pip3 install pandas
+
+sudo pip3 install dlib --verbose
+
+sudo pip3 install augmentor
+
+sudo pip3 install matplotlib
+
+sudo pip3 install numpy
+
+sudo pip3 install h5py
+
+#sudo pip3 install argparse
+
+sudo apt install libqt4-test
+
+ 
+
+## Uninstalling existing wrapt.
+
+sudo apt-get uninstall python3-wrapt
+
+ 
+
+sudo pip3 install tensorflow
+
+##1) system wide installation
+
+pip3 install --user --upgrade tensorflow  # install in $HOME
+
+Verify the install:
+
+python3 -c "import tensorflow as tf; print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
+
+ 
+
+##2) virtual env install
+
+pip install --upgrade tensorflow
+
+Verify the install:
+
+python -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
+
+ 
+
+sudo pip3 install keras
+
+sudo pip3 install pytorch torchvision -c pytorch
+
+ 
+
+## installation of opencv / cv2
+
+## https://blog.piwheels.org/how-to-work-out-the-missing-dependencies-for-a-python-package/
+
+ 
+
+ 
+
+### Installation opencv/ cv2
+
+### Building from source
+
+### https://medium.com/@aadeshshah/pre-installed-and-pre-configured-raspbian-with-opencv-4-1-0-for-raspberry-pi-3-model-b-b-9c307b9a993a
+
+ 
+
+sudo apt-get update && sudo apt-get upgrade && sudo rpi-update
+
+To increase the swap size, open swapfile by:
+
+sudo nano /etc/dphys-swapfile
+
+#CONF_SWAPSIZE=100
+
+CONF_SWAPSIZE=2048
+
+sudo apt-get install build-essential cmake pkg-config
+
+sudo apt-get install libjpeg-dev libtiff5-dev libjasper-dev libpng12-dev
+
+sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
+
+sudo apt-get install libxvidcore-dev libx264-dev
+
+sudo apt-get install libgtk2.0-dev libgtk-3-dev
+
+sudo apt-get install libatlas-base-dev gfortran
+
+sudo apt-get install python3-dev
+
+sudo apt-get install python3-pip
+
+ 
+
+wget -O opencv.zip https://github.com/opencv/opencv/archive/4.1.0.zip
+
+wget -O opencv_contrib.zip https://github.com/opencv/opencv_contrib/archive/4.1.0.zip
+
+unzip opencv.zip
+
+unzip opencv_contrib.zip
+
+ 
+
+sudo pip3 install numpy
+
+ 
+
+cd ~/opencv-4.1.0/
+
+mkdir build
+
+cd build
+
+cmake -D CMAKE_BUILD_TYPE=RELEASE \
+
+-D CMAKE_INSTALL_PREFIX=/usr/local \
+
+-D INSTALL_PYTHON_EXAMPLES=ON \
+
+-D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib-4.1.0/modules \
+
+-D BUILD_EXAMPLES=ON ..
+
+make -j4
+
+sudo make install && sudo ldconfig
+
+sudo reboot
+
+ 
+
+ 
+
+## installation of tensorflow
+
+sudo pip3 install --upgrade https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-1.8.0-cp34-cp34m-linux_x86_64.whl
+
+ 
+
+ 
+
+## installation of dlib
+
+## https://www.pyimagesearch.com/2017/05/01/install-dlib-raspberry-pi/
+
+ 
+
+sudo nano /etc/dphys-swapfile
+
+CONF_SWAPSIZE=100
+
+And then update it to use 1024MB rather than 100MB:
+
+ 
+
+sudo /etc/init.d/dphys-swapfile stop
+
+sudo /etc/init.d/dphys-swapfile start
+
+free -m
+
+sudo raspi-config
+
+sudo apt-get update
+
+sudo apt-get install build-essential cmake
+
+sudo apt-get install libgtk-3-dev
+
+sudo apt-get install libboost-all-dev
+
+pip install numpy
+
+pip install scipy
+
+pip install scikit-image
+
+pip install dlib
+
+ 
+
+ 
+
+## installing scipy
+
+# https://raspberrypi.stackexchange.com/questions/8308/how-to-install-latest-scipy-version-on-raspberry-pi
+
+sudo /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024
+
+sudo /sbin/mkswap /var/swap.1
+
+sudo chmod 600 /var/swap.1
+
+sudo /sbin/swapon /var/swap.1
+
+ 
+
+ 
+
+wget https://github.com/scipy/scipy/archive/v1.0.0.tar.gz
+
+tar -xzvf scipy-v1.0.0.tar.gz
+
+cd scipy
+
+ 
+
+python3 setup.py build
+
+python3 setup.py install --user
+
+ 
+
+## configuring cv2 using piwheel blogs
+
+## https://blog.piwheels.org/new-opencv-builds/

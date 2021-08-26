@@ -1,5 +1,12 @@
 1) Download anaconda from https://repo.anaconda.com/archive/Anaconda3-2021.05-Linux-x86_64.sh
-bash Anaconda3-2021.05-Linux-x86_64.sh -b -p ~/anaconda
+
+$ bash Anaconda3-5.1.0-Linux-x86_64.sh -b -p ~/anaconda
+
+$ echo export PATH=~/anaconda/bin:$PATH >> ~/.bashrc
+
+$ source ~/.bashrc
+
+$ conda update conda
 
 
 2) Download Cuda toolkit from
@@ -97,5 +104,95 @@ $ sudo cp /lib/udev/rules.d/40-vm-hotadd.rules /etc/udev/rules.d
 $ sudo sed -i '/SUBSYSTEM=="memory", ACTION=="add"/d' /etc/udev/rules.d/40-vm-hotadd.rules
 
 
-    
+Download Nvidia display driver as per version matching:
+Version matching can be checked on : https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html
+
+First check compatible version of driver using following command:
+$ ubuntu-drivers devices
+Install automatically using following command based on abover recommended version:
+sudo apt install nvidia-driver-470
+
+## Manaully download and install can be tried out, but it did not work for me:
+## https://us.download.nvidia.com/XFree86/Linux-x86_64/470.57.02/NVIDIA-Linux-x86_64-470.57.02.run  
+##sudo sh NVIDIA-Linux-x86_64-470.57.02.run
+
+You might also want to build CUDA samples and run it. It will take a while. For that you need to jump to CUDA sample directory. For me it is /usr/local/cuda-10.0/samples and run
+
+$ sudo make
+
+After that go to built sources
+
+$ /usr/local/cuda-10.0/samples/bin/x86_64/linux/release
+
+and execute ./deviceQuery and ./bandwidthTest
+
+ 
+
+### Disable auto update, which will cause error.
+
+Open sudo nano /etc/modprobe.d/blacklist.conf  and put following lines:
+
+#blacklist amd76x_edac #this might not be required for x86 32 bit users.
+
+blacklist vga16fb
+
+blacklist nouveau
+
+blacklist rivafb
+
+blacklist nvidiafb
+
+blacklist rivatv
+
+Manually download CuDNN libraries from nvidia site by logging using email:
+website: https://developer.nvidia.com/rdp/cudnn-download
+
+cuDNN Runtime Library for Ubuntu18.04 x86_64 (Deb)
+cuDNN Developer Library for Ubuntu18.04 x86_64 (Deb)
+cuDNN Code Samples and User Guide for Ubuntu18.04 x86_64 (Deb)
+
+CuDNN installation steps can be found on https://docs.nvidia.com/deeplearning/cudnn/install-guide/index.html
+
+2.4. Verifying The Install On Linux
+To verify that cuDNN is installed and is running properly, compile the mnistCUDNN sample located in the /usr/src/cudnn_samples_v8 directory in the Debian file.
+Procedure
+
+    Copy the cuDNN samples to a writable path.
+
+    $cp -r /usr/src/cudnn_samples_v8/ $HOME
+
+    Go to the writable path.
+
+    $ cd  $HOME/cudnn_samples_v8/mnistCUDNN
+
+    Compile the mnistCUDNN sample.
+
+    $make clean && make
+
+    Run the mnistCUDNN sample.
+
+    $ ./mnistCUDNN
+
+    If cuDNN is properly installed and running on your Linux system, you will see a message similar to the following:
+
+    Test passed!
+
+
+#### If you get error FreeImage.h not found:
+
+$ sudo apt-get install g++ freeglut3-dev build-essential libx11-dev libxmu-dev libxi-dev libglu1-mesa libglu1-mesa-dev
+$ sudo apt-get install libfreeimage3 libfreeimage-dev
+
+
+## setup envv
+
+conda create -n v38 python=3.8 anaconda
+#Initiate current shell to use conda activate
+
+$ conda init bash
+
+# Close the shell and reopen it.
+
+Pip installing TF
+
 

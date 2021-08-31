@@ -1,0 +1,56 @@
+Installing cuda 10.0 on ubuntu 18.04
+---------------------------------------
+
+Compatible software:
+Installation Instructions:
+
+1) Download run file and go by step-by-step on console
+Do not select default driver there.
+2) manually install the driver presented on the below:
+
+Other installation options are available in the form of meta-packages. For example, to install all the library packages, replace "cuda" with the "cuda-libraries-10-0" meta package. For more information on all the available meta packages click here.
+Patch 1 (Released May 10, 2019) 	
+In this patch we introduce new APIs for JPEG stream parsing and device and pinned memory control as well as a new hybrid decode API that decouples decoding process into pure host and device stages enabling more flexible control flow. The new APIs also support ROI decoding and 4 channel jpeg bitstreams.
+
+
+post installation steps:
+
+
+nano ~/.bashrc
+
+## Add following lines in ~/.bashrc at the end of file.
+
+export PATH=/usr/local/cuda-10.0/bin${PATH:+:${PATH}}
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/extras/CUPTI/lib64
+
+export TF_CPP_MIN_LOG_LEVEL=2 ## To disable some warning for Tensorflow, which says to utilize EVX (i.e. specific components of CPU) for computation.
+
+export CUDA_VISIBLE_DEVICES=0 ## To make CUDA visible. This can be done in PYTHON CODE too. Hence, it can be skipped for now.
+
+source ~/.bashrc
+
+# Install NVIDIA driver
+
+# Issue with driver install requires creating /usr/lib/nvidia
+
+sudo mkdir /usr/lib/nvidia
+
+irst check compatible version of driver using following command:
+$ ubuntu-drivers devices
+Install automatically using following command based on abover recommended version:
+sudo apt install nvidia-driver-470
+
+
+Please make sure that
+ -   PATH includes /usr/local/cuda-10.0/bin
+ -   LD_LIBRARY_PATH includes /usr/local/cuda-10.0/lib64, or, add /usr/local/cuda-10.0/lib64 to /etc/ld.so.conf and run ldconfig as root
+
+To uninstall the CUDA Toolkit, run the uninstall script in /usr/local/cuda-10.0/bin
+
+Please see CUDA_Installation_Guide_Linux.pdf in /usr/local/cuda-10.0/doc/pdf for detailed information on setting up CUDA.
+
+***WARNING: Incomplete installation! This installation did not install the CUDA Driver. A driver of version at least 384.00 is required for CUDA 10.0 functionality to work.
+To install the driver using this installer, run the following command, replacing <CudaInstaller> with the name of this run file:
+    sudo <CudaInstaller>.run -silent -driver
+

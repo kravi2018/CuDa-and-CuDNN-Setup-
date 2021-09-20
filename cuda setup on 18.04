@@ -103,26 +103,36 @@ $ sudo systemctl enable nvidia-persistenced
 $ sudo cp /lib/udev/rules.d/40-vm-hotadd.rules /etc/udev/rules.d
 $ sudo sed -i '/SUBSYSTEM=="memory", ACTION=="add"/d' /etc/udev/rules.d/40-vm-hotadd.rules
 
-
+// ##################### CAUTION #################
+// Installing Cuda Toolkit using Deb file automatically install Nividia Driver hence, folloowing Step is not required.
 Download Nvidia display driver as per version matching:
 Version matching can be checked on : https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html
 
 First check compatible version of driver using following command:
 $ ubuntu-drivers devices
 Install automatically using following command based on abover recommended version:
-sudo apt install nvidia-driver-470
+ex
+############################################ End of Not-required steps ##################
 
 ## Manaully download and install can be tried out, but it did not work for me:
 ## https://us.download.nvidia.com/XFree86/Linux-x86_64/470.57.02/NVIDIA-Linux-x86_64-470.57.02.run  
 ##sudo sh NVIDIA-Linux-x86_64-470.57.02.run
 
-You might also want to build CUDA samples and run it. It will take a while. For that you need to jump to CUDA sample directory. For me it is /usr/local/cuda-10.0/samples and run
+Setup following variables:
+
+$ export PATH=/usr/local/cuda-11.4/bin${PATH:+:${PATH}}
+export LD_LIBRARY_PATH=/usr/local/cuda-11.4/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+
+
+You might also want to build CUDA samples and run it. It will take a while. 
+For that you need to jump to CUDA sample directory. 
+For me it is /usr/local/cuda-10.0/samples and run
 
 $ sudo make
 
 After that go to built sources
 
-$ /usr/local/cuda-10.0/samples/bin/x86_64/linux/release
+$ /usr/local/cuda-11.4/samples/bin/x86_64/linux/release
 
 and execute ./deviceQuery and ./bandwidthTest
 
@@ -151,7 +161,11 @@ cuDNN Runtime Library for Ubuntu18.04 x86_64 (Deb)
 cuDNN Developer Library for Ubuntu18.04 x86_64 (Deb)
 cuDNN Code Samples and User Guide for Ubuntu18.04 x86_64 (Deb)
 
-CuDNN installation steps can be found on https://docs.nvidia.com/deeplearning/cudnn/install-guide/index.html
+sudo dpkg -i libcudnn8_8.2.2.26-1+cuda11.4_amd64.deb 
+sudo dpkg -i libcudnn8-dev_8.2.2.26-1+cuda11.4_amd64.deb
+sudo dpkg -i libcudnn8-samples_8.2.2.26-1+cuda11.4_amd64.deb
+
+CuDNN installation steps can be found on [link]https://docs.nvidia.com/deeplearning/cudnn/install-guide/index.html
 
 2.4. Verifying The Install On Linux
 To verify that cuDNN is installed and is running properly, compile the mnistCUDNN sample located in the /usr/src/cudnn_samples_v8 directory in the Debian file.

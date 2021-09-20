@@ -3,6 +3,13 @@
 $ bash Anaconda3-5.1.0-Linux-x86_64.sh -b -p ~/anaconda
 
 $ echo export PATH=~/anaconda/bin:$PATH >> ~/.bashrc
+echo "# Disable the default Nouveau kernel driver" | sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf
+echo "# -----------------------------------------" | sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf
+echo "blacklist nouveau" | sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf
+echo "blacklist lbm-nouveau" | sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf
+echo "options nouveau modeset=0" | sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf
+echo "alias nouveau off" | sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf
+echo "alias lbm-nouveau off" | sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf
 
 $ source ~/.bashrc
 
@@ -229,5 +236,19 @@ $ conda init bash
 # Close the shell and reopen it.
 
 Pip installing TF
+
+## If black screen after driver installation
+
+https://askubuntu.com/questions/1129516/black-screen-at-boot-after-nvidia-driver-installation-on-ubuntu-18-04-2-lts
+
+
+echo "# Disable the default Nouveau kernel driver" | sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf
+echo "# -----------------------------------------" | sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf
+echo "blacklist nouveau" | sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf
+echo "blacklist lbm-nouveau" | sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf
+echo "options nouveau modeset=0" | sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf
+echo "alias nouveau off" | sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf
+echo "alias lbm-nouveau off" | sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf
+
 
 

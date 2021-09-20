@@ -251,4 +251,7 @@ echo "alias nouveau off" | sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf
 echo "alias lbm-nouveau off" | sudo tee -a /etc/modprobe.d/blacklist-nouveau.conf
 
 
+some useful links:
+
+https://linuxconfig.org/how-to-uninstall-the-nvidia-drivers-on-ubuntu-20-04-focal-fossa-linux
 

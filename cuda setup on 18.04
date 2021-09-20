@@ -111,7 +111,9 @@ Version matching can be checked on : https://docs.nvidia.com/cuda/cuda-toolkit-r
 First check compatible version of driver using following command:
 $ ubuntu-drivers devices
 Install automatically using following command based on abover recommended version:
-ex
+
+sudo apt-get install nvidia-driver-470-server // version would vary
+
 ############################################ End of Not-required steps ##################
 
 ANOTHER METHOD TO INSTALL CUDA TOOLKIT AND DRIVER ------------>

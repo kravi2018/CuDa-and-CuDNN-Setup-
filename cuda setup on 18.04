@@ -1,3 +1,15 @@
+Method I
+
+Download .run from Nvidia website for cuda toolkit.
+
+Install run file using sudo sh command
+
+Do not select nvidia driver while prompting option for driver here.
+
+Instead install nvidia driver from "Software and Updates" -> "Additional Drivers" --> Select appropriate driver here --> Apply changes.
+
+
+=========================================================
 1) Download anaconda from https://repo.anaconda.com/archive/Anaconda3-2021.05-Linux-x86_64.sh
 
 $ bash Anaconda3-5.1.0-Linux-x86_64.sh -b -p ~/anaconda

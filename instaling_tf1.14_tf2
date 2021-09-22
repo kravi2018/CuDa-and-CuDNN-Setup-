@@ -1,0 +1,11 @@
+https://docs.anaconda.com/anaconda/user-guide/tasks/tensorflow/
+
+
+
+conda create -n tf-gpu tensorflow-gpu
+conda activate tf-gpu
+
+older version:
+
+conda create -n tf-gpu-cuda8 tensorflow-gpu cudatoolkit=9.0
+conda activate tf-gpu-cuda8
